@@ -34,7 +34,7 @@ public class MainViewControler implements Initializable{
 	
 	@FXML
 	public void OnmenuItemDepartAction() {
-		System.out.println("Eu cliquei no botão do departamento.");
+		loadViem("/gui/DepartmentList.fxml");
 	}
 	
 	@FXML
@@ -48,6 +48,7 @@ public class MainViewControler implements Initializable{
 		
 	}
 	
+	// Garante 'synchronized' que o processamento não vai ser interropindo no mult Thred
 	private synchronized void loadViem(String absoluteName){
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
