@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.DepartmentService;
 
 public class MainViewControler implements Initializable{
 
@@ -34,7 +35,7 @@ public class MainViewControler implements Initializable{
 	
 	@FXML
 	public void OnmenuItemDepartAction() {
-		loadViem("/gui/DepartmentList.fxml");
+		loadViem2("/gui/DepartmentList.fxml");
 	}
 	
 	@FXML
@@ -67,5 +68,26 @@ public class MainViewControler implements Initializable{
 		}
 	}	
 	
+	private synchronized void loadViem2(String absoluteName){
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			VBox newVBox = loader.load();
+			
+			Scene mainScene = Main.getMainScene();
+			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+			
+			Node mainMenu = mainVBox.getChildren().get(0);
+			mainVBox.getChildren().clear();
+			mainVBox.getChildren().add(mainMenu);
+			mainVBox.getChildren().addAll(newVBox.getChildren());			
+			
+			DepartmentListController controler = loader.getController();
+			controler.serDepartmentServico(new DepartmentService());
+			controler.updateTableViem();	
+			
+		}catch(IOException e) {
+			Alerts.showAlert("IOException", "Error leitura", e.getMessage(), AlertType.ERROR);
+		}
+	}
 
 }
